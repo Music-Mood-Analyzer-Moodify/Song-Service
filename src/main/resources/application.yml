@@ -1,0 +1,28 @@
+spring:
+  data:
+    mongodb:
+      uri: ${MONGO_URI}
+      database: ${MONGO_DATABASE}
+  rabbitmq:
+    host: ${RABBIT_HOST}
+    port: ${RABBIT_PORT}
+    username: ${RABBIT_USERNAME}
+    password: ${RABBIT_PASSWORD}
+  application:
+    name: song-service
+logging:
+  level:
+    root: INFO
+    org.springframework.security: DEBUG
+
+server:
+  error:
+    whitelabel:
+      enabled: false
+  port: ${SERVER_PORT}
+
+springdoc:
+  api-docs:
+    path: "/docs"
+  swagger-ui:
+    path: "/swagger.html"
