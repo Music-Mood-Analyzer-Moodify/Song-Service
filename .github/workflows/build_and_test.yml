@@ -24,10 +24,18 @@ jobs:
 
       - name: Build and test application
         env:
-          MONGO_HOST: mongo-db
-          MONGO_PORT: 27021
-          MONGO_USERNAME: username
-          MONGO_PASSWORD: password
-          MONGO_DATABASE: database
+          MONGO_URI: mongodb://guest:guest@song-db:27017
+          MONGO_DATABASE: song-db
+          RABBIT_HOST: rabbitmq
+          RABBIT_PORT: 5672
+          RABBIT_USERNAME: guest
+          RABBIT_PASSWORD: guest
           SERVER_PORT: 8080
         run: gradle build --no-daemon --info
+
+      - name: Upload Test Artifacts
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: ${{ github.workspace }}/build/reports/tests/test/*
