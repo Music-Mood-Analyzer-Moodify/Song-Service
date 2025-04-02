@@ -31,10 +31,14 @@ public class RabbitMQConfig {
     @Bean
     public ConnectionFactory connectionFactory() {
         CachingConnectionFactory factory = new CachingConnectionFactory();
-        factory.setHost(rabbitmqHost);
-        factory.setPort(rabbitmqPort);
-        factory.setUsername(rabbitmqUsername);
-        factory.setPassword(rabbitmqPassword);
+        // factory.setHost(rabbitmqHost);
+        // factory.setPort(rabbitmqPort);
+        // factory.setUsername(rabbitmqUsername);
+        // factory.setPassword(rabbitmqPassword);
+        factory.setHost("rabbitmqHost");
+        factory.setPort(5672);
+        factory.setUsername("rabbitmqUsername");
+        factory.setPassword("rabbitmqPassword");
         return factory;
     }
 
