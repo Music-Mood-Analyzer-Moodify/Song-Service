@@ -26,6 +26,9 @@ jobs:
 
   Snyk-Scan:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ github.workspace }}
     steps:
       - name: Run Snyk to check for vulnerabilities
         uses: snyk/actions/gradle-jdk17@master
