@@ -35,10 +35,10 @@ public class RabbitMQConfig {
         // factory.setPort(rabbitmqPort);
         // factory.setUsername(rabbitmqUsername);
         // factory.setPassword(rabbitmqPassword);
-        factory.setHost("rabbitmqHost");
+        factory.setHost("84.194.128.56");
         factory.setPort(5672);
-        factory.setUsername("rabbitmqUsername");
-        factory.setPassword("rabbitmqPassword");
+        factory.setUsername("u8g9renj9grt8jg");
+        factory.setPassword("8urogunr8grnt88");
         return factory;
     }
 
