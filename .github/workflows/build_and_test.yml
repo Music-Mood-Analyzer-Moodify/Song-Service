@@ -21,7 +21,6 @@ jobs:
           java-version: "21"
           distribution: "temurin"
           cache: gradle
-          cache-dependency-path: build.gradle.kts
 
       - name: Build and test application
         env:

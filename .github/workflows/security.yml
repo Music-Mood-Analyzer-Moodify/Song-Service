@@ -26,6 +26,9 @@ jobs:
 
   Snyk-Scan:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ github.workspace }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -36,7 +39,6 @@ jobs:
           java-version: "17"
           distribution: "temurin"
           cache: gradle
-          cache-dependency-path: build.gradle.kts
 
       - name: Run Snyk to check for vulnerabilities
         uses: snyk/actions/gradle-jdk17@master
@@ -44,7 +46,7 @@ jobs:
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
-          args: --file=${{ github.workspace }}/build.gradle.kts --sarif-file-output=${{ github.workspace }}/snyk.sarif
+          args: --sarif-file-output=${{ github.workspace }}/snyk.sarif
 
       - name: Upload result to GitHub Code Scanning
         uses: github/codeql-action/upload-sarif@v3
