@@ -53,6 +53,7 @@ jobs:
           image: ${{ secrets.REGISTRY_USERNAME }}/moodify_song_service_security_test:latest
 
       - name: Upload result to GitHub Code Scanning
+        if: ${{ always() }}
         uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: ${{ github.workspace }}/snyk.sarif
