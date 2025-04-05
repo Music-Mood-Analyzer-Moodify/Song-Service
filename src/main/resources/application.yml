@@ -10,7 +10,13 @@ spring:
     password: ${RABBIT_PASSWORD}
   application:
     name: song-service
+opentelemetry:
+  exporter:
+    otlp:
+      protocol: http/protobuf
 logging:
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSSSSS} [%thread] %-5level %logger{36} [%X{traceId}] - %msg%n"
   level:
     root: INFO
     org.springframework.security: DEBUG
