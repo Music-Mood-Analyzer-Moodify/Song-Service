@@ -36,7 +36,7 @@ public class SongController {
             span.setAttribute("message.content", message);
             span.setAttribute("message.status", "received");
 
-            producer.sendMessageToSongPredictedQueue(message);
+            producer.produceMessageToSongPredictedQueue(message);
 
             String response = "Message sent";
             logger.info("Sending response: {}", response);
@@ -48,6 +48,7 @@ public class SongController {
             span.recordException(e);
             throw e; // Re-throw for proper HTTP error handling
         } finally {
+            System.out.println("Span ended. Span contents: " + span.toString());
             span.end();
         }
     }
