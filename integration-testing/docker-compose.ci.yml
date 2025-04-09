@@ -57,8 +57,7 @@ services:
         condition: "service_healthy"
     image: judahlit/moodify_song_service:latest
     build:
-      context: .
-      dockerfile: Dockerfile
+      context: ..
     restart: unless-stopped
     environment:
       - SERVER_PORT=8080
