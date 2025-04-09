@@ -1,6 +1,5 @@
 package com.moodify.song_service.config;
 
-import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -22,11 +21,6 @@ public class RabbitMQConfig {
 
     @Value("${spring.rabbitmq.password}")
     private String rabbitmqPassword;
-
-    @Bean
-    public Queue ownershipEmail() {
-        return new Queue("ownership_email", false);
-    }
 
     @Bean
     public ConnectionFactory connectionFactory() {

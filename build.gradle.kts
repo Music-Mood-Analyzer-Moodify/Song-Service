@@ -18,6 +18,8 @@ repositories {
 }
 
 dependencies {
+	implementation("io.micrometer:micrometer-registry-otlp:1.15.0-M3")
+	implementation("io.opentelemetry.instrumentation:opentelemetry-spring-boot-starter:2.12.0")
 	implementation("org.springframework.boot:spring-boot-starter-amqp")
 	implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
 	implementation("org.springframework.boot:spring-boot-starter-web")
