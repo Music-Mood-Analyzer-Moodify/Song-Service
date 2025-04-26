@@ -27,9 +27,6 @@ server:
       enabled: false
   port: ${SERVER_PORT}
 
-cors:
-  allowed-origin: ${CORS_ALLOWED_ORIGIN}
-
 springdoc:
   api-docs:
     path: "/docs"
