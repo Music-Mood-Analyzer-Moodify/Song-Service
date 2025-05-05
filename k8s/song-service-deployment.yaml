@@ -53,22 +53,22 @@ spec:
             - name: RABBIT_HOST
               valueFrom:
                 secretKeyRef:
-                  name: rabbitmq-secret
+                  name: rabbitmq-default-user
                   key: host
             - name: RABBIT_PORT
               valueFrom:
                 secretKeyRef:
-                  name: rabbitmq-secret
+                  name: rabbitmq-default-user
                   key: port
             - name: RABBIT_USERNAME
               valueFrom:
                 secretKeyRef:
-                  name: rabbitmq-secret
+                  name: rabbitmq-default-user
                   key: username
             - name: RABBIT_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: rabbitmq-secret
+                  name: rabbitmq-default-user
                   key: password
             - name: OTEL_EXPORTER_OTLP_ENDPOINT
               valueFrom:
