@@ -1,0 +1,77 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: song-service-service
+spec:
+  selector:
+    app: song-service
+  ports:
+    - port: 9102
+      targetPort: 8080
+  type: LoadBalancer
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: song-service-deployment
+  labels:
+    app: song-service
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: song-service
+  template:
+    metadata:
+      labels:
+        app: song-service
+    spec:
+      containers:
+        - name: song-service
+          # image: judahlit/moodify_song_service:latest
+          image: k3d-moodify:5000/song_service:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          resources:
+            limits:
+              memory: 512Mi
+              cpu: "1"
+          env:
+            - name: SERVER_PORT
+              value: "8080"
+            - name: MONGO_URI
+              valueFrom:
+                secretKeyRef:
+                  name: song-service-secret
+                  key: mongo-uri
+            - name: MONGO_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: song-service-secret
+                  key: mongo-database
+            - name: RABBIT_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: rabbitmq-secret
+                  key: host
+            - name: RABBIT_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: rabbitmq-secret
+                  key: port
+            - name: RABBIT_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: rabbitmq-secret
+                  key: username
+            - name: RABBIT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: rabbitmq-secret
+                  key: password
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              valueFrom:
+                secretKeyRef:
+                  name: otel-secret
+                  key: endpoint
