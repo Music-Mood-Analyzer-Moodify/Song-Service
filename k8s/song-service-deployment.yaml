@@ -6,7 +6,7 @@ spec:
   selector:
     app: song-service
   ports:
-    - port: 9102
+    - port: 8082
       targetPort: 8080
   type: LoadBalancer
 ---
@@ -71,7 +71,4 @@ spec:
                   name: rabbitmq-default-user
                   key: password
             - name: OTEL_EXPORTER_OTLP_ENDPOINT
-              valueFrom:
-                secretKeyRef:
-                  name: otel-secret
-                  key: endpoint
+              value: "http://grafana-k8s-monitoring-alloy-receiver.default.svc.cluster.local:4318"
