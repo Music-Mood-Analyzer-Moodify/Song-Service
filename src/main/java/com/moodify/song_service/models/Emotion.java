@@ -7,7 +7,8 @@ public enum Emotion {
     SAD("sad"),
     ANGRY("angry"),
     RELAXED("relaxed"),
-    EXCITED("excited");
+    EXCITED("excited"),
+    UNKNOWN("unknown");
 
     private final String value;
     private static final Emotion[] VALUES = values();
@@ -27,6 +28,6 @@ public enum Emotion {
     }
 
     public static Emotion randomEmotion() {
-        return VALUES[RANDOM.nextInt(VALUES.length)];
+        return VALUES[RANDOM.nextInt(VALUES.length - 1)]; // Exclude UNKNOWN
     }
 }

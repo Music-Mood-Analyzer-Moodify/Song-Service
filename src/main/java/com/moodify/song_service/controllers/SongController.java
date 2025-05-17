@@ -44,24 +44,60 @@ public class SongController {
         this.songService = songService;
     }
 
-    @GetMapping("/song")
-    public ResponseEntity<?> getSongs(
-        @RequestParam int page,
-        @RequestParam(required = false) String emotion
+    @GetMapping("/allSongs")
+    public ResponseEntity<?> allSongs(
+        @RequestParam int page
     ) {
-        Span span = tracer.spanBuilder("getSongs").startSpan();
+        Span span = tracer.spanBuilder("allSongs").startSpan();
         try (var scope = span.makeCurrent()) {
-            logger.info("Received GET request to /song with page={} and emotion={}", page, emotion);
+            logger.info("Received GET request to /allSongs with page={}", page);
             span.setAttribute("http.method", "GET");
-            span.setAttribute("http.path", "/song");
+            span.setAttribute("http.path", "/allSongs");
+            span.setAttribute("request.page", page);
+            Page<Song> songs = songService.getSongs(page);
+            songs.forEach(song -> song.setEmotion(Emotion.UNKNOWN));
+            logger.info("Returning {} songs for page {}", songs.getNumberOfElements(), page);
+            span.setAttribute("response.size", songs.getNumberOfElements());
+            return ResponseEntity.ok(songs);
+        } finally {
+            span.end();
+        }
+    }
+
+    @GetMapping("/allSongsAuthenticated")
+    public ResponseEntity<?> allSongsAuthenticated(
+        @RequestParam int page
+    ) {
+        Span span = tracer.spanBuilder("allSongsAuthenticated").startSpan();
+        try (var scope = span.makeCurrent()) {
+            logger.info("Received GET request to /allSongsAuthenticated with page={}", page);
+            span.setAttribute("http.method", "GET");
+            span.setAttribute("http.path", "/allSongsAuthenticated");
+            span.setAttribute("request.page", page);
+            Page<Song> songs = songService.getSongs(page);
+            logger.info("Returning {} songs for page {}", songs.getNumberOfElements(), page);
+            span.setAttribute("response.size", songs.getNumberOfElements());
+            return ResponseEntity.ok(songs);
+        } finally {
+            span.end();
+        }
+    }
+
+    @GetMapping("/songsWithEmotion")
+    public ResponseEntity<?> songsWithEmotion(
+        @RequestParam int page,
+        @RequestParam String emotion
+    ) {
+        Span span = tracer.spanBuilder("songsWithEmotion").startSpan();
+        try (var scope = span.makeCurrent()) {
+            logger.info("Received GET request to /songsWithEmotion with page={} and emotion={}", page, emotion);
+            span.setAttribute("http.method", "GET");
+            span.setAttribute("http.path", "/songsWithEmotion");
             span.setAttribute("request.page", page);
             span.setAttribute("request.emotion", emotion == null ? "null" : emotion);
     
             if (emotion == null) {
-                Page<Song> songs = songService.getSongs(page);
-                logger.info("Returning {} songs for page {}", songs.getNumberOfElements(), page);
-                span.setAttribute("response.size", songs.getNumberOfElements());
-                return ResponseEntity.ok(songs);
+                return ResponseEntity.badRequest().body("Emotion cannot be null");
             }
             try {
                 Emotion emotionEnum = Emotion.valueOf(emotion.toUpperCase(Locale.ROOT));
