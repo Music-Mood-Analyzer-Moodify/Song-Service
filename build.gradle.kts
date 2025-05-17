@@ -18,6 +18,8 @@ repositories {
 }
 
 dependencies {
+	compileOnly("org.projectlombok:lombok:1.18.38")
+	annotationProcessor("org.projectlombok:lombok:1.18.38")
 	implementation("io.micrometer:micrometer-registry-otlp:1.15.0-M3")
 	implementation("io.opentelemetry.instrumentation:opentelemetry-spring-boot-starter:2.12.0")
 	implementation("org.springframework.boot:spring-boot-starter-amqp")
@@ -28,6 +30,8 @@ dependencies {
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.springframework.amqp:spring-rabbit-test")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+	testCompileOnly("org.projectlombok:lombok:1.18.38")
+	testAnnotationProcessor("org.projectlombok:lombok:1.18.38")
 }
 
 tasks.withType<Test> {
