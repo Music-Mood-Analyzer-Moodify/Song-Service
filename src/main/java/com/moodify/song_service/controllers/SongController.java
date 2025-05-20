@@ -58,7 +58,14 @@ public class SongController {
             songs.forEach(song -> song.setEmotion(Emotion.UNKNOWN));
             logger.info("Returning {} songs for page {}", songs.getNumberOfElements(), page);
             span.setAttribute("response.size", songs.getNumberOfElements());
+            span.setAttribute("response.status", "OK");
             return ResponseEntity.ok(songs);
+        } catch(Exception e) {
+            span.setAttribute("error", true);
+            span.recordException(new RuntimeException(e.getMessage()));
+            span.setAttribute("response.status", "INTERNAL_SERVER_ERROR");
+            logger.error("Error occurred while processing request: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal Server Error");
         } finally {
             span.end();
         }
@@ -78,6 +85,12 @@ public class SongController {
             logger.info("Returning {} songs for page {}", songs.getNumberOfElements(), page);
             span.setAttribute("response.size", songs.getNumberOfElements());
             return ResponseEntity.ok(songs);
+        } catch(Exception e) {
+            span.setAttribute("error", true);
+            span.recordException(new RuntimeException(e.getMessage()));
+            span.setAttribute("response.status", "INTERNAL_SERVER_ERROR");
+            logger.error("Error occurred while processing request: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal Server Error");
         } finally {
             span.end();
         }
@@ -111,6 +124,12 @@ public class SongController {
                 span.recordException(e);
                 return ResponseEntity.badRequest().body("Invalid emotion: " + emotion);
             }
+        } catch(Exception e) {
+            span.setAttribute("error", true);
+            span.recordException(new RuntimeException(e.getMessage()));
+            span.setAttribute("response.status", "INTERNAL_SERVER_ERROR");
+            logger.error("Error occurred while processing request: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal Server Error");
         } finally {
             span.end();
         }
