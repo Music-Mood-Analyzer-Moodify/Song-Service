@@ -10,5 +10,6 @@ EXPOSE 8080
 RUN mkdir /app
 
 COPY --from=build /home/gradle/src/build/libs/*.jar /app/song_service.jar
+COPY opentelemetry-javaagent.jar /app/opentelemetry-javaagent.jar
 
-ENTRYPOINT ["java", "-jar", "/app/song_service.jar"]
+ENTRYPOINT ["java", "-javaagent:/app/opentelemetry-javaagent.jar", "-jar", "/app/song_service.jar"]

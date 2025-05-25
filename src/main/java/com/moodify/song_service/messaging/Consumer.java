@@ -92,12 +92,12 @@ public class Consumer {
             span.setAttribute("queue.name", "send_song_queue");
             messagesConsumedCounter.add(
                 1, 
-                    Attributes.of(
-                        AttributeKey.stringKey("queue.name"), "send_song_queue"
-                    )
+                Attributes.of(
+                    AttributeKey.stringKey("queue.name"), "send_song_queue"
+                )
             );
 
-            Song song = objectMapper.readValue(message.getBody(), Song.class);
+            Song song = objectMapper.readValue(messageBody, Song.class);
             song.setEmotion(Emotion.randomEmotion());
             songService.addSong(song);
             

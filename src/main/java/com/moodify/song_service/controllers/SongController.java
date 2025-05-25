@@ -8,6 +8,8 @@ import com.moodify.song_service.services.SongService;
 import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.Tracer;
+import io.opentelemetry.api.metrics.LongCounter;
+import io.opentelemetry.api.metrics.Meter;
 
 import java.util.UUID;
 import java.util.Locale;
@@ -29,9 +31,11 @@ import org.springframework.web.server.ResponseStatusException;
 public class SongController {
 
     private static final Logger logger = LoggerFactory.getLogger(SongController.class);
+    private final Meter meter;
     private final Producer producer;
     private final Tracer tracer;
     private final SongService songService;
+    private final LongCounter httpRequestsCounter;
 
     @Autowired
     public SongController(
@@ -40,8 +44,12 @@ public class SongController {
         SongService songService
     ) {
         this.producer = producer;
+        this.meter = openTelemetry.getMeter("song-service:song-controller");
         this.tracer = openTelemetry.getTracer("song-service:song-controller");
         this.songService = songService;
+        this.httpRequestsCounter = meter.counterBuilder("http_requests_total")
+            .setDescription("Total requests sent to the song controller")
+            .build();
     }
 
     @GetMapping("/allSongs")
@@ -67,6 +75,7 @@ public class SongController {
             logger.error("Error occurred while processing request: {}", e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal Server Error");
         } finally {
+            httpRequestsCounter.add(1);
             span.end();
         }
     }
@@ -92,6 +101,7 @@ public class SongController {
             logger.error("Error occurred while processing request: {}", e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal Server Error");
         } finally {
+            httpRequestsCounter.add(1);
             span.end();
         }
     }
@@ -103,6 +113,7 @@ public class SongController {
     ) {
         Span span = tracer.spanBuilder("songsWithEmotion").startSpan();
         try (var scope = span.makeCurrent()) {
+            httpRequestsCounter.add(1);
             logger.info("Received GET request to /songsWithEmotion with page={} and emotion={}", page, emotion);
             span.setAttribute("http.method", "GET");
             span.setAttribute("http.path", "/songsWithEmotion");
@@ -157,6 +168,7 @@ public class SongController {
             span.setAttribute("song.found", true);
             return song.get();
         } finally {
+            httpRequestsCounter.add(1);
             span.end();
         }
     }
@@ -183,6 +195,7 @@ public class SongController {
             span.recordException(e);
             throw e; // Re-throw for proper HTTP error handling
         } finally {
+            httpRequestsCounter.add(1);
             System.out.println("Span ended. Span contents: " + span.toString());
             span.end();
         }

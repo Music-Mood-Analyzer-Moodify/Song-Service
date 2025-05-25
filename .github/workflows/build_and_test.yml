@@ -22,7 +22,7 @@ jobs:
           distribution: "temurin"
           cache: gradle
 
-      - name: Build and test application
+      - name: Build application
         env:
           MONGO_URI: mongodb://guest:guest@song-db:27017
           MONGO_DATABASE: song-db
@@ -31,7 +31,18 @@ jobs:
           RABBIT_USERNAME: guest
           RABBIT_PASSWORD: guest
           SERVER_PORT: 8080
-        run: gradle build --no-daemon --info
+        run: gradle build --no-test --no-daemon --info
+
+      - name: Run Tests
+        env:
+          MONGO_URI: mongodb://guest:guest@song-db:27017
+          MONGO_DATABASE: song-db
+          RABBIT_HOST: rabbitmq
+          RABBIT_PORT: 5672
+          RABBIT_USERNAME: guest
+          RABBIT_PASSWORD: guest
+          SERVER_PORT: 8080
+        run: gradle test --no-daemon --info
 
       - name: Upload Test Artifacts
         if: ${{ always() }}
