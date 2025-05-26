@@ -1,4 +1,6 @@
 .env
+/e2e-testing/secrets
+/integration-testing/secrets
 
 HELP.md
 .gradle
