@@ -41,7 +41,7 @@ public class SongService {
             if (page < 0) {
                 logger.warn("Invalid page number: {}", page);
                 span.setAttribute("error", true);
-                throw new IllegalArgumentException("Page number must be greater than 0");
+                throw new IllegalArgumentException("Page number must be non-negative");
             }
             PageRequest pageRequest = PageRequest.of(page, pageSize);
             Page<Song> result = songRepository.findAll(pageRequest);

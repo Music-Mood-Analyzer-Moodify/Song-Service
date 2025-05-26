@@ -119,7 +119,7 @@ public class Consumer {
             span.recordException(e);
             span.setAttribute("message.status", "failed");
         } finally {
-            System.out.println("Span ended. Span contents: " + span.toString());
+            logger.info("Span ended. Span contents: {}", span.toString());
             span.end();
         }
     }
