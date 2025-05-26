@@ -55,7 +55,7 @@ jobs:
         run: sleep 10
 
       - name: Run E2E Tests
-        run: docker exec e2e-client newman run e2e-tests.postman_collection.json -e e2e-tests.postman_collection.json --env-var "api_key=${{ secrets.E2E_TEST_GOOGLE_API_KEY }}"  --insecure --delay-request 1000 --reporters cli,htmlextra --reporter-htmlextra-export report.html
+        run: docker exec e2e-client newman run e2e-tests.postman_collection.json -e e2e-tests.postman_collection.json --env-var "api_key=${{ secrets.INTEGRATION_TEST_GOOGLE_API_KEY }}"  --insecure --delay-request 1000 --reporters cli,htmlextra --reporter-htmlextra-export report.html
 
       - name: Copy Report to Host
         run: docker cp e2e-client:report.html .
