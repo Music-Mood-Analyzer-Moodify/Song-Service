@@ -50,7 +50,7 @@ services:
       - "8198:8080"
   song-db:
     container_name: e2e-song-db
-    image: bitnami/mongodb:latest
+    image: mongo:latest
     restart: unless-stopped
     environment:
       - MONGO_USERNAME=yippie
@@ -70,7 +70,7 @@ services:
       retries: 3
       start_period: 20s
     volumes:
-      - ./e2e-testing/song-service-mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+      - ./song-service-mongo-init.js:/docker-entrypoint-initdb.d/song-service-mongo-init.js:ro
       - song-db-volume:/var/lib/song-db
 
   tracker-service:

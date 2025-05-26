@@ -3,6 +3,7 @@ package com.moodify.song_service.messaging;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.Message;
+import org.springframework.amqp.rabbit.annotation.Queue;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -45,7 +46,12 @@ public class Consumer {
         this.songService = songService;
     }
 
-    @RabbitListener(queues = "check_song_queue")
+    @RabbitListener(
+        queuesToDeclare = @Queue(
+            name = "check_song_queue",
+            durable = "true"
+        )
+    )
     public void listenCheckSongQueue(Message message) {
         Context extractedContext = propagator.extract(Context.current(), message, new RabbitMQHeaderGetter());
         String messageBody = new String(message.getBody());
@@ -78,7 +84,12 @@ public class Consumer {
         }
     }
 
-    @RabbitListener(queues = "send_song_queue")
+    @RabbitListener(
+        queuesToDeclare = @Queue(
+            name = "send_song_queue",
+            durable = "true"
+        )
+    )
     public void listenSendSongQueue(Message message) {
         Context extractedContext = propagator.extract(Context.current(), message, new RabbitMQHeaderGetter());
         String messageBody = new String(message.getBody());
