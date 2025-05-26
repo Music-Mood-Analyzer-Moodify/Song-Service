@@ -19,7 +19,7 @@ services:
     environment:
       - GOOGLE_APPLICATION_CREDENTIALS=/app/firebase-credentials.json
       - GOOGLE_CLOUD_PROJECT_ID=moodify-web-frontend
-      - tracker_SERVICE_URL=http://e2e-tracker-service:8080
+      - ANALYTICS_SERVICE_URL=http://e2e-analytics-service:8080
       - SONG_SERVICE_URL=http://e2e-song-service:8080
       - CORS_ALLOWED_ORIGIN=http://localhost:3000
     ports:
