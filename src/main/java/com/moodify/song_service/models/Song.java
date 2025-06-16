@@ -10,7 +10,9 @@ import java.util.UUID;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Getter
 @NoArgsConstructor
@@ -25,7 +27,12 @@ public class Song {
     @Setter
     private Emotion emotion;
 
-    public Song(String spotifyId, String name, List<String> artistNames) {
+    @JsonCreator
+    public Song(
+        @JsonProperty("spotifyId") String spotifyId,
+        @JsonProperty("name") String name,
+        @JsonProperty("artistNames") List<String> artistNames
+    ) {
         this.id = UUID.randomUUID();
         this.spotifyId = spotifyId;
         this.name = name;

@@ -49,7 +49,7 @@ public class Consumer {
     @RabbitListener(
         queuesToDeclare = @Queue(
             name = "check_song_queue",
-            durable = "true"
+            durable = "false"
         )
     )
     public void listenCheckSongQueue(Message message) {
@@ -87,7 +87,7 @@ public class Consumer {
     @RabbitListener(
         queuesToDeclare = @Queue(
             name = "send_song_queue",
-            durable = "true"
+            durable = "false"
         )
     )
     public void listenSendSongQueue(Message message) {
